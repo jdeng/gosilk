@@ -45,7 +45,7 @@ func (d *decoder) decodeFrame(sampleRate int32, payload []byte, buf []byte) (int
 	return int(used) * 2, nil
 }
 
-func Decode(buf []byte, SAMPLE_RATE int32, withHeader bool) ([]byte, error) {
+func Decode(buf []byte, sampleRate int32, withHeader bool) ([]byte, error) {
 	const MAXSIZE = 20 * 48 * 5 * 2 * 2
 	var b bytes.Buffer
 	out := make([]byte, MAXSIZE)
@@ -74,7 +74,7 @@ func Decode(buf []byte, SAMPLE_RATE int32, withHeader bool) ([]byte, error) {
 		payload := buf[2 : 2+plen]
 		buf = buf[2+plen:]
 
-		olen, _ := d.decodeFrame(SAMPLE_RATE, payload, out)
+		olen, _ := d.decodeFrame(sampleRate, payload, out)
 		if olen < 0 {
 			log.Printf("Failed to decode %d bytes\n", plen)
 			break
